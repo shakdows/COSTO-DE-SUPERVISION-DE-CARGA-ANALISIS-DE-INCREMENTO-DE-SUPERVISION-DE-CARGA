@@ -55,6 +55,8 @@
   tbody tr:hover{background:rgba(123,95,255,.07)}
   .sv{color:var(--teal);font-family:var(--font-d);font-weight:500}
   .yr{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .tag{font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--purple);border:1px solid var(--purple);
+    border-radius:4px;padding:1px 4px;margin-left:6px;vertical-align:middle;font-family:var(--font-b)}
   .tblwrap{overflow-x:auto;max-height:430px;overflow-y:auto}
   form{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;align-items:end}
   label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
@@ -76,7 +78,7 @@
     <div class="sigil"><span>V</span></div>
     <h1>SUPERVISIÓN DE CARGA · DP WORLD<small>PERU TRACTOR S.R.L. · RUC 20290308802 · análisis VERONIX</small></h1>
   </header>
-  <div class="sub">Concepto <b style="color:var(--teal)">"Supervisión de Carga"</b> extraído de la factura DP World Logistics de cada carpeta de importación · 11 embarques (Sep 2025 – Abr 2026)</div>
+  <div class="sub">Concepto <b style="color:var(--teal)">"Supervisión de Carga"</b> extraído de la factura / valorización DP World Logistics de cada carpeta de importación · 13 embarques (Sep 2025 – Jun 2026)</div>
 
   <div class="kpis" id="kpis"></div>
 
@@ -101,7 +103,7 @@
       <div class="tblwrap">
         <table>
           <thead><tr>
-            <th>Fecha fact.</th><th>DAM</th><th>B/L</th><th>Bultos</th><th>Peso&nbsp;TM</th><th>Vol&nbsp;m³</th>
+            <th>Fecha</th><th>DAM</th><th>B/L</th><th>Bultos</th><th>Peso&nbsp;TM</th><th>Vol&nbsp;m³</th>
             <th>Superv.&nbsp;US$</th><th>US$/m³</th><th>US$/bulto</th><th>Total&nbsp;DPW</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
@@ -112,7 +114,7 @@
     <div class="panel">
       <div class="ph"><h2>AGREGAR EMBARQUE</h2></div>
       <form id="frm">
-        <div><label>Fecha factura</label><input type="date" id="f_fecha" required></div>
+        <div><label>Fecha</label><input type="date" id="f_fecha" required></div>
         <div><label>DAM</label><input id="f_dam" placeholder="92978" required></div>
         <div><label>B/L</label><input id="f_bl" placeholder="MIA/CAL/..."></div>
         <div><label>Bultos</label><input type="number" id="f_bultos" min="1" required></div>
@@ -123,31 +125,33 @@
         <div><button class="btn" type="submit">+ Agregar</button></div>
       </form>
       <div class="row">
-        <button class="btn ghost" id="reset">Restaurar 11 originales</button>
+        <button class="btn ghost" id="reset">Restaurar 13 originales</button>
         <button class="btn ghost" id="export">Exportar CSV</button>
       </div>
-      <div class="note">Los nuevos embarques se guardan en este navegador. Al desplegar en Vercel persisten por dispositivo. La fila más cara y la más barata se resaltan en el gráfico.</div>
+      <div class="note">Los nuevos embarques se guardan en este navegador. Etiqueta <span class="tag">prof</span> = valorización (proforma), aún no facturada. La fila más cara se resalta en rojo en el gráfico.</div>
     </div>
   </div>
 
-  <div class="footer">VERONIX · veronix.ai · datos: facturas DP World Logistics S.R.L. (RUC 20100010217) — agencia: Mocayas Logística Aduanera S.A.C.</div>
+  <div class="footer">VERONIX · veronix.ai · datos: facturas / valorizaciones DP World Logistics S.R.L. (RUC 20100010217) — agencia: Mocayas Logística Aduanera S.A.C.</div>
 </div>
 
 <script>
 const SEED=[
- {fecha:"2025-09-08",dam:"367394",bl:"MIA/CAL/17961",bultos:8,peso:3.48,vol:8.69,sup:295,tot:631.30},
- {fecha:"2025-09-08",dam:"368021",bl:"MIA/CAL/17985",bultos:15,peso:5.49,vol:13.72,sup:295,tot:607.70},
- {fecha:"2025-09-25",dam:"406688",bl:"MIA/CAL/18221",bultos:4,peso:1.31,vol:4.20,sup:200,tot:495.60},
- {fecha:"2025-10-02",dam:"416847",bl:"MIA/CAL/18156",bultos:2,peso:1.40,vol:3.49,sup:180,tot:485.11},
- {fecha:"2025-11-07",dam:"470233",bl:"MIA/CAL/18534",bultos:8,peso:2.42,vol:7.11,sup:220,tot:519.20},
- {fecha:"2025-11-12",dam:"489290",bl:"MIA/CAL/18569",bultos:7,peso:3.15,vol:7.89,sup:200,tot:495.60},
- {fecha:"2025-11-26",dam:"508090",bl:"MIA/CAL/18670",bultos:5,peso:2.29,vol:5.72,sup:200,tot:495.60},
- {fecha:"2026-03-25",dam:"92978",bl:"MIA/CAL/19292",bultos:10,peso:3.38,vol:9.81,sup:307.50,tot:622.45},
- {fecha:"2026-03-25",dam:"130338",bl:"MIA/CAL/19407",bultos:7,peso:3.97,vol:9.92,sup:260,tot:566.40},
- {fecha:"2026-04-16",dam:"161018",bl:"MIA/CAL/19638",bultos:12,peso:2.94,vol:9.22,sup:290,tot:601.80},
- {fecha:"2026-04-25",dam:"179714",bl:"MIA/CAL/19683",bultos:7,peso:3.43,vol:8.57,sup:290,tot:616.60}
+ {fecha:"2025-09-08",dam:"367394",bl:"MIA/CAL/17961",bultos:8,peso:3.48,vol:8.69,sup:295,tot:631.30,tipo:"F"},
+ {fecha:"2025-09-08",dam:"368021",bl:"MIA/CAL/17985",bultos:15,peso:5.49,vol:13.72,sup:295,tot:607.70,tipo:"F"},
+ {fecha:"2025-09-25",dam:"406688",bl:"MIA/CAL/18221",bultos:4,peso:1.31,vol:4.20,sup:200,tot:495.60,tipo:"F"},
+ {fecha:"2025-10-02",dam:"416847",bl:"MIA/CAL/18156",bultos:2,peso:1.40,vol:3.49,sup:180,tot:485.11,tipo:"F"},
+ {fecha:"2025-11-07",dam:"470233",bl:"MIA/CAL/18534",bultos:8,peso:2.42,vol:7.11,sup:220,tot:519.20,tipo:"F"},
+ {fecha:"2025-11-12",dam:"489290",bl:"MIA/CAL/18569",bultos:7,peso:3.15,vol:7.89,sup:200,tot:495.60,tipo:"F"},
+ {fecha:"2025-11-26",dam:"508090",bl:"MIA/CAL/18670",bultos:5,peso:2.29,vol:5.72,sup:200,tot:495.60,tipo:"F"},
+ {fecha:"2026-03-25",dam:"92978",bl:"MIA/CAL/19292",bultos:10,peso:3.38,vol:9.81,sup:307.50,tot:622.45,tipo:"F"},
+ {fecha:"2026-03-25",dam:"130338",bl:"MIA/CAL/19407",bultos:7,peso:3.97,vol:9.92,sup:260,tot:566.40,tipo:"F"},
+ {fecha:"2026-04-16",dam:"161018",bl:"MIA/CAL/19638",bultos:12,peso:2.94,vol:9.22,sup:290,tot:601.80,tipo:"F"},
+ {fecha:"2026-04-25",dam:"179714",bl:"MIA/CAL/19683",bultos:7,peso:3.43,vol:8.57,sup:290,tot:616.60,tipo:"F"},
+ {fecha:"2026-06-11",dam:"19973",bl:"MIA/CAL/19973",bultos:8,peso:4.087,vol:10.217,sup:341.02,tot:663.18,tipo:"V"},
+ {fecha:"2026-06-11",dam:"20004",bl:"MIA/CAL/20004",bultos:13,peso:4.476,vol:11.819,sup:364.62,tot:691.03,tipo:"V"}
 ];
-const KEY='veronix_dpw_v1';
+const KEY='veronix_dpw_v2';
 let data=load(), mode='abs', chart=null;
 
 function load(){try{const r=localStorage.getItem(KEY);if(r){const a=JSON.parse(r);if(Array.isArray(a)&&a.length)return a;}}catch(e){}return JSON.parse(JSON.stringify(SEED));}
@@ -167,28 +171,31 @@ function render(){
   const a25=d25.length?d25.reduce((a,b)=>a+b.sup,0)/d25.length:0;
   const a26=d26.length?d26.reduce((a,b)=>a+b.sup,0)/d26.length:0;
   const delta=a25?((a26-a25)/a25*100):0;
+  const pm25=d25.length?d25.reduce((a,b)=>a+b.sup/b.vol,0)/d25.length:0;
+  const pm26=d26.length?d26.reduce((a,b)=>a+b.sup/b.vol,0)/d26.length:0;
 
   document.getElementById('kpis').innerHTML=[
     ['Embarques',data.length,''],
     ['Supervisión acumulada',usd(total),'neto, sin IGV',1],
     ['Promedio / embarque',usd(avg),'',1],
     ['Mínimo',usd(min),''],
-    ['Máximo',usd(max),'']
+    ['Máximo (récord)',usd(max),'jun-2026']
   ].map(k=>`<div class="kpi ${k[3]?'t':''}"><div class="l">${k[0]}</div><div class="v">${k[1]} ${k[2]?`<small>${k[2]}</small>`:''}</div></div>`).join('');
 
   document.getElementById('banner').innerHTML=
     `Promedio de supervisión <b>2025</b>: ${usd(a25)} &nbsp;→&nbsp; <b>2026</b>: ${usd(a26)} `+
     `(<span class="up">${delta>=0?'+':''}${delta.toFixed(1)}%</span>). `+
-    `El cargo no es plano: va de <b>${usd(min)}</b> a <b>${usd(max)}</b> y escala con el volumen, con un piso ~$180–200 para embarques chicos. `+
-    `En 2026 todos los embarques están en $260–307; en 2025 la mayoría estaba en $180–220. El alza absoluta se explica sobre todo por embarques de mayor volumen.`;
+    `Esa subida tiene dos causas, aprox. mitad y mitad: <b>más volumen por embarque</b> (operativo) y un <b>reajuste de tarifa de ~$48/embarque</b> a igual carga (negociable, no regulado por OSITRAN). `+
+    `Ojo: el costo por m³ NO subió (2025 ${usd(pm25)}/m³ → 2026 ${usd(pm26)}/m³); en 2025 los embarques chicos parecían caros solo por el cargo mínimo (~$180–200). `+
+    `Récord histórico: <b>${usd(max)}</b> (jun-2026).`;
 
-  // table
   document.getElementById('tbody').innerHTML=data.map(d=>{
     const pm3=d.sup/d.vol, pb=d.sup/d.bultos;
     const dot=yr(d)==='2025'?'var(--y25)':'var(--y26)';
+    const tag=d.tipo==='V'?'<span class="tag">prof</span>':'';
     return `<tr>
       <td><span class="yr" style="background:${dot}"></span>${d.fecha}</td>
-      <td>${d.dam}</td><td style="color:var(--muted)">${d.bl||'—'}</td>
+      <td>${d.dam}${tag}</td><td style="color:var(--muted)">${d.bl||'—'}</td>
       <td>${d.bultos}</td><td>${d.peso?fmt(d.peso):'—'}</td><td>${fmt(d.vol)}</td>
       <td class="sv">${usd(d.sup)}</td><td>${usd(pm3)}</td><td>${usd(pb)}</td>
       <td style="color:var(--muted)">${d.tot?usd(d.tot):'—'}</td>
@@ -196,8 +203,8 @@ function render(){
 
   drawChart(min,max);
   document.getElementById('chartnote').innerHTML=
-    mode==='abs'?'Costo de supervisión por embarque. Morado = 2025, turquesa = 2026.'
-    :mode==='m3'?'Costo de supervisión normalizado por m³ — revela el efecto del cargo mínimo en embarques chicos.'
+    mode==='abs'?'Costo de supervisión por embarque. Morado = 2025, turquesa = 2026, rojo = récord.'
+    :mode==='m3'?'Costo de supervisión normalizado por m³ — revela el efecto del cargo mínimo en embarques chicos de 2025.'
     :'Costo de supervisión por bulto.';
 }
 
@@ -216,7 +223,7 @@ function drawChart(min,max){
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},
         tooltip:{callbacks:{
-          title:(c)=>{const d=data[c[0].dataIndex];return 'DAM '+d.dam+' · '+d.fecha;},
+          title:(c)=>{const d=data[c[0].dataIndex];return 'DAM '+d.dam+' · '+d.fecha+(d.tipo==='V'?' (valorización)':'');},
           label:(c)=>{const d=data[c.dataIndex];
             return [' Supervisión: '+usd(d.sup),' Vol: '+fmt(d.vol)+' m³ · '+d.bultos+' bultos',
               ' '+usd(d.sup/d.vol)+'/m³ · '+usd(d.sup/d.bultos)+'/bulto'];}}}},
@@ -234,13 +241,13 @@ document.getElementById('frm').onsubmit=e=>{
   e.preventDefault();
   data.push({fecha:f_fecha.value,dam:f_dam.value,bl:f_bl.value,
     bultos:+f_bultos.value,peso:+f_peso.value||0,vol:+f_vol.value,
-    sup:+f_sup.value,tot:+f_tot.value||0});
+    sup:+f_sup.value,tot:+f_tot.value||0,tipo:"F"});
   save();render();e.target.reset();
 };
 document.getElementById('reset').onclick=()=>{data=JSON.parse(JSON.stringify(SEED));save();render();};
 document.getElementById('export').onclick=()=>{
-  const h=['fecha','dam','bl','bultos','peso_tm','vol_m3','supervision_usd','usd_m3','usd_bulto','total_dpw'];
-  const rows=data.map(d=>[d.fecha,d.dam,d.bl,d.bultos,d.peso,d.vol,d.sup,(d.sup/d.vol).toFixed(2),(d.sup/d.bultos).toFixed(2),d.tot]);
+  const h=['fecha','dam','bl','bultos','peso_tm','vol_m3','supervision_usd','usd_m3','usd_bulto','total_dpw','tipo'];
+  const rows=data.map(d=>[d.fecha,d.dam,d.bl,d.bultos,d.peso,d.vol,d.sup,(d.sup/d.vol).toFixed(2),(d.sup/d.bultos).toFixed(2),d.tot,d.tipo==='V'?'valorizacion':'factura']);
   const csv=[h.join(','),...rows.map(r=>r.join(','))].join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download='supervision_carga_dpw.csv';a.click();
